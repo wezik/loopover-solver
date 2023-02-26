@@ -9,6 +9,6 @@ mod solver;
 
 fn main() {
     let board = read_from_args(env::args());
-    let moves = generate_solve(board);
+    let moves = generate_solve(&board);
     println!("{:?}", moves);
 }

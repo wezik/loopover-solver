@@ -1,5 +1,6 @@
 use std::mem;
 
+#[derive(Clone, Debug)]
 pub struct Board {
     tiles: Vec<Vec<Tile>>,
     solved_state: Vec<Vec<Tile>>,
@@ -8,13 +9,20 @@ pub struct Board {
 }
 
 impl Board {
-    pub fn new(tiles: Vec<Vec<Tile>>, solved_state: Vec<Vec<Tile>>) -> Board {
-        Board {
-            height: tiles.len(),
-            width: tiles.len(),
-            tiles,
-            solved_state,
+    pub fn new(tiles: Vec<Vec<Tile>>, solved_state: Vec<Vec<Tile>>) -> Option<Board> {
+        if tiles.len() > 1
+            && tiles[0].len() > 1
+            && tiles.len() == solved_state.len()
+            && tiles[0].len() == solved_state[0].len()
+        {
+            return Some(Board {
+                height: tiles.len(),
+                width: tiles.len(),
+                tiles,
+                solved_state,
+            });
         }
+        None
     }
 
     pub fn move_col_up(&mut self, x: usize, distance: usize) {
@@ -60,6 +68,41 @@ impl Board {
             self.tiles[y][self.width - 1] = buffer;
         }
     }
+
+    pub fn get_height(&self) -> usize {
+        self.height
+    }
+
+    pub fn get_width(&self) -> usize {
+        self.width
+    }
+
+    pub fn get_tiles(&self) -> &Vec<Vec<Tile>> {
+        &self.tiles
+    }
+
+    pub fn get_tile(&self, x: usize, y: usize) -> &Tile {
+        &self.tiles[y][x]
+    }
+
+    pub fn find_tile(&self, tile: &Tile) -> Option<(usize, usize)> {
+        for (y, row) in self.tiles.iter().enumerate() {
+            for (x, t) in row.iter().enumerate() {
+                if t.get_value() == tile.get_value() {
+                    return Some((x, y));
+                }
+            }
+        }
+        None
+    }
+
+    pub fn get_solved(&self) -> &Vec<Vec<Tile>> {
+        &self.solved_state
+    }
+
+    pub fn get_solved_tile(&self, x: usize, y: usize) -> &Tile {
+        &self.solved_state[y][x]
+    }
 }
 
 #[derive(Debug, Default, Clone)]
@@ -70,6 +113,10 @@ pub struct Tile {
 impl Tile {
     pub fn new(s: String) -> Tile {
         Tile { value: s }
+    }
+
+    pub fn get_value(&self) -> &str {
+        return &self.value;
     }
 }
 
@@ -95,7 +142,7 @@ mod board_tests {
             vec![test_tile("A"), test_tile("E"), test_tile("I")],
         ];
 
-        let mut board = Board::new(starting.clone(), starting);
+        let mut board = Board::new(starting.clone(), starting).unwrap();
 
         // When
         board.move_col_up(1, expected.len() * 2 + 2);
@@ -119,7 +166,7 @@ mod board_tests {
             vec![test_tile("G"), test_tile("E"), test_tile("C")],
         ];
 
-        let mut board = Board::new(starting.clone(), starting);
+        let mut board = Board::new(starting.clone(), starting).unwrap();
 
         // When
         board.move_col_down(1, expected.len() * 4 + 1);
@@ -143,7 +190,7 @@ mod board_tests {
             vec![test_tile("I"), test_tile("G"), test_tile("H")],
         ];
 
-        let mut board = Board::new(starting.clone(), starting);
+        let mut board = Board::new(starting.clone(), starting).unwrap();
 
         // When
         board.move_row_right(0, expected.len() * 2 + 2);
@@ -167,7 +214,7 @@ mod board_tests {
             vec![test_tile("I"), test_tile("G"), test_tile("H")],
         ];
 
-        let mut board = Board::new(starting.clone(), starting);
+        let mut board = Board::new(starting.clone(), starting).unwrap();
 
         // When
         board.move_row_left(2, expected.len() * 5 + 2);

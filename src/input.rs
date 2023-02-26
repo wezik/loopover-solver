@@ -10,7 +10,7 @@ pub fn read_from_args(args: Args) -> Board {
     let starting_tiles = map_string_to_tiles(starting);
     let solved_tiles = map_string_to_tiles(solved);
 
-    Board::new(starting_tiles, solved_tiles)
+    Board::new(starting_tiles, solved_tiles).expect("arguments are mismatched")
 }
 
 fn map_string_to_tiles(input: &str) -> Vec<Vec<Tile>> {
