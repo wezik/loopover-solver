@@ -18,19 +18,47 @@ impl Board {
     }
 
     pub fn move_col_up(&mut self, x: usize, distance: usize) {
-
+        for _ in 0..distance % self.height {
+            let mut buffer = mem::take(&mut self.tiles[0][x]);
+            for y in (1..self.height).rev() {
+                let next_buffer = mem::replace(&mut self.tiles[y][x], buffer);
+                buffer = next_buffer;
+            }
+            self.tiles[0][x] = buffer;
+        }
     }
 
     pub fn move_col_down(&mut self, x: usize, distance: usize) {
-
+        for _ in 0..distance % self.height {
+            let mut buffer = mem::take(&mut self.tiles[self.height - 1][x]);
+            for y in 0..self.height - 1 {
+                let next_buffer = mem::replace(&mut self.tiles[y][x], buffer);
+                buffer = next_buffer;
+            }
+            self.tiles[self.height - 1][x] = buffer;
+        }
     }
 
     pub fn move_row_left(&mut self, y: usize, distance: usize) {
-
+        for _ in 0..distance % self.width {
+            let mut buffer = mem::take(&mut self.tiles[y][0]);
+            for x in (1..self.height).rev() {
+                let next_buffer = mem::replace(&mut self.tiles[y][x], buffer);
+                buffer = next_buffer;
+            }
+            self.tiles[y][0] = buffer;
+        }
     }
 
     pub fn move_row_right(&mut self, y: usize, distance: usize) {
-
+        for _ in 0..distance % self.width {
+            let mut buffer = mem::take(&mut self.tiles[y][self.width - 1]);
+            for x in 0..self.width - 1 {
+                let next_buffer = mem::replace(&mut self.tiles[y][x], buffer);
+                buffer = next_buffer;
+            }
+            self.tiles[y][self.width - 1] = buffer;
+        }
     }
 }
 
