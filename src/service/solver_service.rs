@@ -1,18 +1,16 @@
-use crate::board::Board;
+use crate::modules::loopover::Board;
+use crate::ErrorMessage;
 
-pub fn generate_solve(board: &Board) -> Vec<String> {
-    let mut board = board.clone();
-    println!("{:?}", board);
-    solve_last_row(&mut board);
-    println!("{:?}", board);
+pub fn solve(board: &mut Board, solved_board: &Board) -> Vec<String> {
+    solve_last_row(board, solved_board);
     Vec::new()
 }
 
-fn solve_last_row(board: &mut Board) {
+fn solve_last_row(board: &mut Board, solved_board: &Board) {
     for x in 0..board.get_width() {
         let (mut pos_x, mut pos_y) = board
-            .find_tile(board.get_solved_tile(x, board.get_height() - 1))
-            .expect("boards don't match");
+            .find_tile(solved_board.get_tile(x, board.get_height() - 1))
+            .unwrap_or_else(|| panic!("{}", ErrorMessage::BoardsMismatched.get_message()));
 
         if pos_x != x && pos_y == board.get_height() - 1 {
             (pos_x, pos_y) = move_col(board, pos_x, pos_y, -1);
