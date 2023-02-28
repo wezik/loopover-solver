@@ -94,7 +94,7 @@ impl Board {
     }
 }
 
-#[derive(Debug, Default, Clone)]
+#[derive(Debug, Default, Clone, PartialEq)]
 pub struct Tile {
     value: String,
 }

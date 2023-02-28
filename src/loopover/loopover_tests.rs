@@ -1,4 +1,4 @@
-use crate::modules::loopover::{Board, Tile};
+use crate::loopover::structs::{Board, Tile};
 use crate::ErrorMessage;
 
 fn test_tile(s: &str) -> Tile {
@@ -11,7 +11,12 @@ fn test_panic_with_incorrect_board() {
     // Given
     let tiles = vec![
         vec![test_tile("A"), test_tile("B"), test_tile("C")],
-        vec![test_tile("D"), test_tile("E"), test_tile("F"), test_tile("G")],
+        vec![
+            test_tile("D"),
+            test_tile("E"),
+            test_tile("F"),
+            test_tile("G"),
+        ],
         vec![test_tile("H"), test_tile("I"), test_tile("J")],
     ];
     // When & Then
