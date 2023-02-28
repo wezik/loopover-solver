@@ -9,17 +9,17 @@ pub struct Board {
 
 impl Board {
     pub fn new(tiles: Vec<Vec<Tile>>) -> Option<Board> {
-        if tiles.len() < 2 {
+        if tiles.len() > 2 {
             let len = tiles[0].len();
-            if len < 2 || tiles.iter().any(|row| row.len() != len) {
-                return None;
+            if len > 2 && !tiles.iter().any(|row| row.len() != len) {
+                return Some(Board {
+                    height: tiles.len(),
+                    width: tiles[0].len(),
+                    tiles,
+                });
             }
         }
-        Some(Board {
-            height: tiles.len(),
-            width: tiles[0].len(),
-            tiles,
-        })
+        None
     }
 
     pub fn move_col_up(&mut self, x: usize, distance: usize) {
