@@ -1,8 +1,6 @@
 use crate::ErrorMessage;
 
 pub mod error;
-#[cfg(test)]
-mod loopover_tests;
 mod mapper;
 mod solver;
 mod structs;
