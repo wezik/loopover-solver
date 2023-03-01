@@ -62,7 +62,7 @@ mod tests {
         for y in 0..height {
             let mut row = Vec::new();
             for x in 0..width {
-                row.push(Tile::new(values[x + (height - 1) * y].to_string()));
+                row.push(Tile::new(values[x + (width) * y].to_string()));
             }
             tiles.push(row);
         }
@@ -112,7 +112,7 @@ mod tests {
     fn test_boards_validation_when_same() {
         // Given
         let board1 = create_test_board(vec!["a", "b", "c", "d", "e", "f", "g", "h", "i"], 3, 3);
-        let board2 = create_test_board(vec!["a", "b", "c", "d", "e", "f", "g", "h", "i"], 3, 3);
+        let board2 = create_test_board(vec!["c", "a", "b", "e", "f", "d", "g", "h", "i"], 3, 3);
 
         // When
         let result = valid_boards(&board1, &board2);
