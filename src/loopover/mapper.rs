@@ -5,7 +5,7 @@ pub fn map_args_to_boards(args: std::env::Args) -> Option<(Board, Board)> {
     let input = map_args_to_strings(args.collect());
     let current_board = map_tiles_to_board(map_string_to_tiles(input.0));
     let solved_board = map_tiles_to_board(map_string_to_tiles(input.1));
-    if !valid_boards(&current_board, &solved_board) {
+    if !are_boards_valid(&current_board, &solved_board) {
         return None;
     }
     Some((current_board, solved_board))
@@ -34,20 +34,31 @@ fn map_tiles_to_board(tiles: Vec<Vec<Tile>>) -> Board {
     Board::new(tiles).unwrap_or_else(|| panic!("{}", ErrorMessage::BoardIncorrect.get_message()))
 }
 
-fn valid_boards(current_board: &Board, solved_board: &Board) -> bool {
-    let current_tiles = current_board.get_tiles();
-    let solved_tiles = solved_board.get_tiles();
-    let are_tiles_same = !current_tiles
-        .iter()
-        .any(|tile| !solved_tiles.contains(tile));
-    let are_boards_equal = current_board.get_width() == solved_board.get_width()
-        && current_board.get_height() == solved_board.get_height();
+fn are_boards_valid(board1: &Board, board2: &Board) -> bool {
+    let mut tiles1 = flatten_board_to_tiles(board1);
+    let mut tiles2 = flatten_board_to_tiles(board2);
+
+    tiles1.sort_by_key(|tile| tile.get_value());
+    tiles2.sort_by_key(|tile| tile.get_value());
+
+    let are_tiles_same = tiles1 == tiles2;
+
+    let are_boards_equal = board1.get_width() == board2.get_width()
+        && board1.get_height() == board2.get_height();
+
     are_tiles_same && are_boards_equal
+}
+
+fn flatten_board_to_tiles(board: &Board) -> Vec<&Tile> {
+    board.get_tiles()
+        .iter()
+        .flatten()
+        .collect::<Vec<&Tile>>()
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::loopover::mapper::valid_boards;
+    use crate::loopover::mapper::are_boards_valid;
     use crate::loopover::structs::{Board, Tile};
 
     fn create_test_board(values: Vec<&str>, width: usize, height: usize) -> Board {
@@ -76,7 +87,7 @@ mod tests {
         let board2 = create_test_board(vec!["a", "b", "c", "d", "e", "f"], 3, 2);
 
         // When
-        let result = valid_boards(&board1, &board2);
+        let result = are_boards_valid(&board1, &board2);
 
         // Then
         assert!(!result);
@@ -89,7 +100,7 @@ mod tests {
         let board2 = create_test_board(vec!["a", "b", "c", "d", "e", "f", "g", "h", "i"], 3, 3);
 
         // When
-        let result = valid_boards(&board1, &board2);
+        let result = are_boards_valid(&board1, &board2);
 
         // Then
         assert!(!result);
@@ -102,7 +113,7 @@ mod tests {
         let board2 = create_test_board(vec!["a", "b", "c", "g", "e", "f"], 2, 3);
 
         // When
-        let result = valid_boards(&board1, &board2);
+        let result = are_boards_valid(&board1, &board2);
 
         // Then
         assert!(!result);
@@ -115,7 +126,7 @@ mod tests {
         let board2 = create_test_board(vec!["c", "a", "b", "e", "f", "d", "g", "h", "i"], 3, 3);
 
         // When
-        let result = valid_boards(&board1, &board2);
+        let result = are_boards_valid(&board1, &board2);
 
         // Then
         assert!(result);
