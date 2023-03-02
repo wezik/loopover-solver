@@ -34,7 +34,7 @@ pub fn solve_row(board: &mut Board, solved_board: &Board, y: usize) {
         let last = x == board.get_width() - 1;
         let mut helper_col_x = 0;
 
-        if !first && pos_y == y {
+        if !first && pos_y == y && pos_x != board.get_width() - 1 {
             // Move tile col down
             (pos_x, pos_y) = movement::move_col(board, pos_x, pos_y, 1);
             helper_col_used = true;
