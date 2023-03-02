@@ -43,17 +43,14 @@ fn are_boards_valid(board1: &Board, board2: &Board) -> bool {
 
     let are_tiles_same = tiles1 == tiles2;
 
-    let are_boards_equal = board1.get_width() == board2.get_width()
-        && board1.get_height() == board2.get_height();
+    let are_boards_equal =
+        board1.get_width() == board2.get_width() && board1.get_height() == board2.get_height();
 
     are_tiles_same && are_boards_equal
 }
 
 fn flatten_board_to_tiles(board: &Board) -> Vec<&Tile> {
-    board.get_tiles()
-        .iter()
-        .flatten()
-        .collect::<Vec<&Tile>>()
+    board.get_tiles().iter().flatten().collect::<Vec<&Tile>>()
 }
 
 #[cfg(test)]
