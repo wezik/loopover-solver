@@ -3,9 +3,9 @@ use crate::loopover::structs::Board;
 mod instructions;
 mod movement;
 
-pub fn solve(board: &mut Board, solved_board: &Board) -> Vec<String> {
+pub fn solve(board: &mut Board, solved_board: &Board) -> String {
     execute_instructions(board, solved_board);
-    Vec::new()
+    format!("{:?}", board.get_moves())
 }
 
 fn execute_instructions(board: &mut Board, solved_board: &Board) {

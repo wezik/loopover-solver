@@ -5,6 +5,7 @@ pub struct Board {
     tiles: Vec<Vec<Tile>>,
     height: usize,
     width: usize,
+    moves: Vec<String>,
 }
 
 impl Board {
@@ -16,6 +17,7 @@ impl Board {
                     height: tiles.len(),
                     width: tiles[0].len(),
                     tiles,
+                    moves: Vec::new(),
                 });
             }
         }
@@ -30,6 +32,7 @@ impl Board {
                 buffer = next_buffer;
             }
             self.tiles[0][x] = buffer;
+            self.moves.push(format!("U{x}"));
         }
     }
 
@@ -41,6 +44,7 @@ impl Board {
                 buffer = next_buffer;
             }
             self.tiles[self.height - 1][x] = buffer;
+            self.moves.push(format!("D{x}"));
         }
     }
 
@@ -52,6 +56,7 @@ impl Board {
                 buffer = next_buffer;
             }
             self.tiles[y][0] = buffer;
+            self.moves.push(format!("L{y}"));
         }
     }
 
@@ -63,6 +68,7 @@ impl Board {
                 buffer = next_buffer;
             }
             self.tiles[y][self.width - 1] = buffer;
+            self.moves.push(format!("R{y}"));
         }
     }
 
@@ -91,6 +97,10 @@ impl Board {
             }
         }
         None
+    }
+
+    pub fn get_moves(&self) -> &Vec<String> {
+        &self.moves
     }
 }
 

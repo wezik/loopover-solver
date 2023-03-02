@@ -35,6 +35,7 @@ pub fn solve_row(board: &mut Board, solved_board: &Board, y: usize) {
         let mut helper_col_x = 0;
 
         if !first && pos_y == y {
+            // Move tile col down
             (pos_x, pos_y) = movement::move_col(board, pos_x, pos_y, 1);
             helper_col_used = true;
             helper_col_x = pos_x;
@@ -48,6 +49,7 @@ pub fn solve_row(board: &mut Board, solved_board: &Board, y: usize) {
         }
 
         if !(first && pos_y == y) {
+            // Move to elevator
             (pos_x, pos_y) = movement::move_row(
                 board,
                 pos_x,
@@ -56,22 +58,26 @@ pub fn solve_row(board: &mut Board, solved_board: &Board, y: usize) {
             );
         }
 
+        // Move old tile col up IF HAD TO BEFORE
         if helper_col_used {
             movement::move_col(board, helper_col_x, 0, -1);
         }
 
         let mut elevator_offset = pos_y;
 
+        // Elevator up
         (pos_x, pos_y) = movement::move_col(board, pos_x, pos_y, calculate_offset(pos_y, y));
 
         if !last {
             elevator_offset -= pos_y;
+            // To Spot In Line
             movement::move_row(
                 board,
                 pos_x,
                 pos_y,
                 calculate_offset(pos_x, board.get_width() - 2),
             );
+            // Elevator back down
             movement::move_col(board, board.get_width() - 1, 0, elevator_offset as isize);
         }
     }
