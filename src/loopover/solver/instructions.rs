@@ -63,13 +63,13 @@ pub fn solve_row(board: &mut Board, solved_board: &Board, y: usize) {
             movement::move_col(board, helper_col_x, 0, -1);
         }
 
-        let mut elevator_offset = pos_y;
+        let mut elevator_offset = pos_y as isize;
 
         // Elevator up
         (pos_x, pos_y) = movement::move_col(board, pos_x, pos_y, calculate_offset(pos_y, y));
 
         if !last {
-            elevator_offset -= pos_y;
+            elevator_offset -= pos_y as isize;
             // To Spot In Line
             movement::move_row(
                 board,
@@ -78,7 +78,7 @@ pub fn solve_row(board: &mut Board, solved_board: &Board, y: usize) {
                 calculate_offset(pos_x, board.get_width() - 2),
             );
             // Elevator back down
-            movement::move_col(board, board.get_width() - 1, 0, elevator_offset as isize);
+            movement::move_col(board, board.get_width() - 1, 0, elevator_offset);
         }
     }
 }
