@@ -1,6 +1,6 @@
-use std::mem;
+use std::{fmt, mem};
 
-#[derive(Clone, Debug)]
+#[derive(Clone)]
 pub struct Board {
     tiles: Vec<Vec<Tile>>,
     height: usize,
@@ -104,7 +104,17 @@ impl Board {
     }
 }
 
-#[derive(Debug, Default, Clone, PartialEq)]
+impl fmt::Debug for Board {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let mut s = String::new();
+        for row in &self.tiles {
+            s += &*format!("{:?}\n", row);
+        }
+        write!(f, "{}", s)
+    }
+}
+
+#[derive(Default, Clone, PartialEq)]
 pub struct Tile {
     value: String,
 }
@@ -119,10 +129,16 @@ impl Tile {
     }
 }
 
+impl fmt::Debug for Tile {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "[{:?}]", self.value)
+    }
+}
+
 #[cfg(test)]
 mod tests {
-    use crate::loopover::structs::{Board, Tile};
     use crate::ErrorMessage;
+    use crate::loopover::structs::{Board, Tile};
 
     fn test_tile(s: &str) -> Tile {
         Tile::new(s.to_string())
