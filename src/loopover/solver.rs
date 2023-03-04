@@ -13,4 +13,5 @@ fn execute_instructions(unsolved_board: &mut Board, solved_board: &Board) {
     for y in 0..unsolved_board.get_height() - 2 {
         instructions::solve_board_row(unsolved_board, solved_board, y);
     }
+    instructions::solve_second_from_bottom_row(unsolved_board, solved_board);
 }

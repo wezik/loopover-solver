@@ -137,8 +137,8 @@ impl fmt::Debug for Tile {
 
 #[cfg(test)]
 mod tests {
-    use crate::ErrorMessage;
     use crate::loopover::structs::{Board, Tile};
+    use crate::ErrorMessage;
 
     fn test_tile(s: &str) -> Tile {
         Tile::new(s.to_string())
