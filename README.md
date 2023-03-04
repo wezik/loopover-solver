@@ -2,7 +2,7 @@
 I am in the process of rewriting my solution from [Java](https://github.com/wezik/solutions/blob/main/src/main/java/com/demo/codewars/loopover_solver/Loopover.java) to Rust 🦀, Java code isn't really that good it's just the first passing solution for codewars kata so I've decided to rewrite it for fun. Also proud of it either way figured it out myself by playing with [the puzzle](https://loopover.xyz) a lot
 
 # loopover-solver
-This is a Rust application that solves loopover puzzle.
+This is a Rust application that solves [loopover](https://loopover.xyz) puzzle.
 It takes in unsolved and solved state as an input, and returns a list of instruction that will lead from one state to the other
 
 ## Usage
