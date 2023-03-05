@@ -2,14 +2,10 @@ use crate::loopover::solver::movement;
 use crate::loopover::solver::movement::{move_col, move_row};
 use crate::loopover::structs::Board;
 
-pub fn solve_bottom_tile(
-    board: &mut Board,
-    mut x: usize,
-    mut y: usize,
-    dest_x: usize,
-    dest_y: usize,
-) {
-    let in_line = y == dest_y;
+pub fn solve_bottom_tile(board: &mut Board, mut x: usize, mut y: usize, dest_x: usize) {
+    let max_y = board.get_height() - 1;
+
+    let in_line = y == max_y;
     let in_col = x == dest_x;
 
     if !in_col && in_line {
@@ -19,17 +15,13 @@ pub fn solve_bottom_tile(
     let offset = calculate_offset(x, dest_x);
     (x, y) = movement::move_row(board, x, y, offset);
 
-    let offset = calculate_offset(y, dest_y);
+    let offset = calculate_offset(y, max_y);
     movement::move_col(board, x, y, offset);
 }
 
-pub fn solve_normal_tile_first(
-    board: &mut Board,
-    mut x: usize,
-    mut y: usize,
-    dest_y: usize,
-    max_x: usize,
-) {
+pub fn solve_normal_tile_first(board: &mut Board, mut x: usize, mut y: usize, dest_y: usize) {
+    let max_x = board.get_width() - 1;
+
     let in_line = y == dest_y;
 
     if in_line {
@@ -48,13 +40,9 @@ pub fn solve_normal_tile_first(
     }
 }
 
-pub fn solve_normal_tile_last(
-    board: &mut Board,
-    mut x: usize,
-    mut y: usize,
-    dest_y: usize,
-    max_x: usize,
-) {
+pub fn solve_normal_tile_last(board: &mut Board, mut x: usize, mut y: usize, dest_y: usize) {
+    let max_x = board.get_width() - 1;
+
     let in_line = y == dest_y;
     let in_col = x == max_x;
 
@@ -73,13 +61,9 @@ pub fn solve_normal_tile_last(
     }
 }
 
-pub fn solve_normal_tile(
-    board: &mut Board,
-    mut x: usize,
-    mut y: usize,
-    dest_y: usize,
-    max_x: usize,
-) {
+pub fn solve_normal_tile(board: &mut Board, mut x: usize, mut y: usize, dest_y: usize) {
+    let max_x = board.get_width() - 1;
+
     let in_line = { y == dest_y };
     let in_last_col = x == max_x;
 
@@ -110,13 +94,10 @@ pub fn solve_normal_tile(
     movement::move_col(board, max_x, 0, -edge_offset);
 }
 
-pub fn solve_second_from_last_tile_first(
-    board: &mut Board,
-    x: usize,
-    y: usize,
-    max_x: usize,
-    max_y: usize,
-) {
+pub fn solve_second_from_last_tile_first(board: &mut Board, x: usize, y: usize) {
+    let max_x = board.get_width() - 1;
+    let max_y = board.get_height() - 1;
+
     let in_corner = y == max_y;
     if in_corner {
         second_from_last_corner_switch(board, x, y);
@@ -126,13 +107,10 @@ pub fn solve_second_from_last_tile_first(
     }
 }
 
-pub fn solve_second_from_last_tile(
-    board: &mut Board,
-    x: usize,
-    y: usize,
-    max_x: usize,
-    max_y: usize,
-) {
+pub fn solve_second_from_last_tile(board: &mut Board, x: usize, y: usize) {
+    let max_x = board.get_width() - 1;
+    let max_y = board.get_height() - 1;
+
     let in_corner = y == max_y;
     if in_corner {
         second_from_last_corner_switch(board, x, y);
