@@ -4,14 +4,15 @@ mod instructions;
 mod movement;
 
 pub fn solve(unsolved_board: &mut Board, solved_board: &Board) -> String {
-    execute_instructions(unsolved_board, solved_board);
-    format!("{:?}", unsolved_board.get_moves())
-}
+    instructions::solve_row(
+        unsolved_board,
+        solved_board,
+        unsolved_board.get_height() - 1,
+    );
 
-fn execute_instructions(unsolved_board: &mut Board, solved_board: &Board) {
-    instructions::solve_bottom_row(unsolved_board, solved_board);
-    for y in 0..unsolved_board.get_height() - 2 {
-        instructions::solve_board_row(unsolved_board, solved_board, y);
+    for y in 0..unsolved_board.get_height() - 1 {
+        instructions::solve_row(unsolved_board, solved_board, y);
     }
-    instructions::solve_second_from_bottom_row(unsolved_board, solved_board);
+
+    format!("{:?}", unsolved_board.get_moves())
 }
