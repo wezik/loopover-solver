@@ -36,9 +36,9 @@ This means:
 
 ## Building and running
 #### Requirements
-- Rust installed
+- Rust and cargo installed [(rustup installation guide)](https://www.rust-lang.org/tools/install)
 #### Build
-Once you have rust installed on your machine you can run
+Once you have rust and cargo installed on your machine you can run
 ```cargo build --release```
 This will build the application in release mode, which will optimize the performance and resulting executable.
 #### Run
